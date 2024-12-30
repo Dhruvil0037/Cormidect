@@ -1,6 +1,7 @@
 import { initialProfile } from "@/lib/initial-profile";
 import {redirect} from "next/navigation";
 import { db } from "@/lib/db";
+import InitialModal from "@/components/modals/intial-modal";
 
 const SetupPage = async() => {
   const user = await initialProfile();
@@ -18,8 +19,7 @@ const SetupPage = async() => {
   }
 
   return (
-    <div className='text-green-400 size-4'>
-      SetupPage</div>
+    <InitialModal />
   )
 }
 
