@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/provider.tsx/theme-provider";
 import { cn } from "@/lib/utils"
+import ModalProvider from "@/components/provider.tsx/modal-provider";
 const font = Open_Sans({
   variable: "--font-open-sans",
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
             enableSystem
             storageKey="cormidect-theme"
           >
+            <ModalProvider/>
             {children}
           </ThemeProvider>
         </body>
