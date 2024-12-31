@@ -23,6 +23,8 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMounted } from "@/hooks/useMounted";
 import FileUpload from "@/components/fileUpload";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().nonempty().min(1, { message: "Server name is required" }),
@@ -39,10 +41,20 @@ const InitialModal = () => {
     },
   });
 
+  const router = useRouter();
+
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    try {
+      await axios.post("/api/servers",data);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
   if (!mounted) return null;
