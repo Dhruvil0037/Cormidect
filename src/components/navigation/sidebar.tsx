@@ -29,7 +29,7 @@ const Sidebar = async() => {
     >
       <NavigationAction/>
       <Separator
-        className='h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto'
+        className='h-[2px] bg-primary rounded-md w-10 mx-auto'
       />
       <ScrollArea
         className='flex-1 w-full'>
