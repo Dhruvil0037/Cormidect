@@ -40,7 +40,7 @@ const findConversation = async (memberOneId: string, memberTwoId: string) => {
 
 const createNewConversation = async (
   memberOneId: string,
-  memberTwoId: string
+memberTwoId: string
 ) => {
   try {
     return await db.conversation.create({
