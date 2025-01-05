@@ -2,9 +2,9 @@
 
 import { UploadDropzone } from "@/lib/uploadthing";
 import "@uploadthing/react/styles.css";
-import { X } from "lucide-react";
+import {FileIcon,  X } from "lucide-react";
 import Image from "next/image";
-
+import { useState } from "react";
 interface FileUploadProps {
   endpoint: "serverImage" | "messageFile";
   value: string;
@@ -12,9 +12,14 @@ interface FileUploadProps {
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChange }) => {
-  const fileType = value.split(".").pop();
+
+  const [fileName, setFileName] = useState<string | null>(null);
+  let fileType : string | undefined = value.split(".").pop();
+  if(fileName){
+    fileType = fileName?.split(".").pop()?.toLowerCase() || "";
+  }
   
-  if (value && fileType) {
+  if (value && fileType !== "pdf") {
     return (
       <div className="relative h-20 w-20">
         <Image
@@ -34,11 +39,35 @@ const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChange }) =>
     );
   }
 
+  if (value && fileType === "pdf") {
+    return (
+      <div className="relative flex items-center p-2 mt-2 rounded-md ">
+        <FileIcon className="size-10  stroke-indigo-400" />
+        <a
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-2 text-sm  dark:text-indigo-400 hover:underline"
+        >
+          {fileName}
+        </a>
+        <button
+          onClick={() => onChange("")}
+          className="bg-rose-500  p-1 rounded-full absolute -top-2 -right-2 shadow-sm"
+          typeof="button"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="!bg-background">
       <UploadDropzone
         endpoint={endpoint}
         onClientUploadComplete={(res) => {
+          setFileName(res?.[0].name);
           onChange(res?.[0].url);
         }}
         onUploadError={(err) => {
