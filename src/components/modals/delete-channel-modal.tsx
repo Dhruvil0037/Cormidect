@@ -18,7 +18,6 @@ const DeleteChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
   const { server, channel } = data;
-  console.log(data);
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {

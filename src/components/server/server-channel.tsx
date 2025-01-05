@@ -45,11 +45,11 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
           "bg-zinc-700/10 text-accent-foreground dark:bg-accent dark:text-accent-foreground"
       )}
     >
-      <Icon className={cn("flex-shrink-0 w-5 h-5 text-muted dark:text-neutral-400 group-hover:text-accent-foreground dark:group-hover:text-accent-foreground transition",params?.channelId === channel.id && "dark:text-accent-foreground")}/>
+      <Icon className={cn("flex-shrink-0 w-5 h-5 text-muted dark:text-neutral-400 group-hover:text-accent-foreground dark:group-hover:text-accent-foreground transition",params?.channelId === channel.id && "text-foreground dark:text-accent-foreground")}/>
       <p
         className={cn(
           "line-clamp-1 font-semibold text-sm text-muted dark:text-neutral-400 group-hover:text-accent-foreground dark:group-hover:text-accent-foreground transition",
-          params?.channelId === channel.id && "dark:text-accent-foreground"
+          params?.channelId === channel.id && "text-foreground dark:text-accent-foreground"
         )}
       >
         {channel.name}
