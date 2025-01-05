@@ -45,7 +45,7 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
   const onClick = ({ id, type}: { id: string; type: "channel" | "member" }) => {
     setOpen(false);
     if (type === "member") {
-      return router.push(`/servers/${params?.serverId}/conversations/${id}`);
+      return router.push(`/servers/${params?.serverId}/conversation/${id}`);
     } else {
       return router.push(`/servers/${params?.serverId}/channels/${id}`);
     }
@@ -57,7 +57,7 @@ const ServerSearch = ({ data }: ServerSearchProps) => {
         onClick={() => setOpen(true)}
         className="group px-2 py-2 rounded-md flex items-center gap-x-2 w-full transition hover:bg-zinc-700/10 dark:hover:bg-accent dark:hover:text-accent-foreground"
       >
-        <Search className="w-4 h-4 text-muted" />
+        <Search className="w-4 h-4 text-muted dark:text-neutral-400 group-hover:text-accent-foreground dark:group-hover:text-accent-foreground transition" />
         <p className="font-semibold text-sm text-muted dark:text-neutral-400 group-hover:text-accent-foreground dark:group-hover:text-accent-foreground transition">
           Search
         </p>
