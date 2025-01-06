@@ -45,11 +45,13 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
         url: apiUrl,
         query
       });
-      await axios.post(url, value);
+      const res = await axios.post(url, value);
       form.reset();
-      router.refresh();
+      
     }catch(error){
       console.error(error);
+    }finally{
+      router.refresh();
     }
   };
 

@@ -1,3 +1,5 @@
+"use client";
+
 import qs from "query-string";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -36,8 +38,8 @@ export const UseChatQuery = ({
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
     useInfiniteQuery({
+      initialPageParam: undefined,
       queryKey: [queryKey],
       queryFn: fetchMessages,
       getNextPageParam: (lastPage) => lastPage?.nextCursor,

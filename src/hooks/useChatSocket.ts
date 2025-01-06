@@ -34,22 +34,22 @@ export const useChatSocket = ({
           return oldData;
         }
 
-        const newData = oldData.pages.map((page: any) => {
-          return {
-            ...page,
-            items: page.items.map((item: MessageWithMemberWithUser) => {
-              if (item.id === message.id) {
-                return message;
-              }
-              return item;
-            }),
-          };
-        });
+        const newData = oldData.pages.map((page: any) => ({
+          ...page,
+          items: page.items.map((item: MessageWithMemberWithUser) => {
+            if (item.id === message.id) {
+              return { ...message }; 
+            }
+            return item;
+          }),
+        }));
         return {
           ...oldData,
           pages: newData,
         };
       });
+
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
     });
 
     socket.on(addKey, (message: MessageWithMemberWithUser) => {
@@ -64,18 +64,22 @@ export const useChatSocket = ({
           };
         }
 
-        const newData = [...oldData.pages];
-
-        newData[0] = {
-          ...newData[0],
-          items: [message, ...newData[0].items],
-        };
+        const newData = oldData.pages.map((page: any, index: number) => {
+          if (index === 0) {
+            return {
+              ...page,
+              items: [message, ...page.items],
+            };
+          }
+          return page;
+        });
 
         return {
           ...oldData,
           pages: newData,
         };
       });
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
     });
 
     return () => {

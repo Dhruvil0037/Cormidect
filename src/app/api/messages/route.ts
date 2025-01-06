@@ -19,7 +19,9 @@ export async function GET(req: Request) {
 
     let messages: Message[] = [];
 
-    if (cursor) {
+    console.log("cursor: ", cursor);
+
+    if (cursor && cursor!=="0") {
       messages = await db.message.findMany({
         take: MESSAGES_BATCH,
         skip: 1,
