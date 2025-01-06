@@ -10,6 +10,7 @@ import { Plus, Smile } from "lucide-react";
 import qs from "query-string"
 import axios from "axios";
 import { useModal } from "@/hooks/useModalStore";
+import EmojiPicker from "../emoji-picker";
 
 interface ChatInputProps {
   apiUrl: string;
@@ -78,7 +79,7 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                               disabled:cursor-not-allowed transition-all"
                   />
                   <div className="absolute top-7 right-8">
-                    <Smile className="text-muted dark:text-neutral-400 group-hover:text-accent-foreground dark:group-hover:text-accent-foreground transition" />
+                    <EmojiPicker/>
                   </div>
                 </div>
               </FormControl>
