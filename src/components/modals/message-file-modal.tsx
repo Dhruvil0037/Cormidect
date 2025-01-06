@@ -29,6 +29,9 @@ const formSchema = z.object({
 });
 
 const MessageFileModal = () => {
+
+  const [fileName, setFileName] = React.useState<string>("");
+
   const { isOpen, onClose, type, data } = useModal();
   const { apiUrl, query } = data;
   const isModalOpen = isOpen && type === "messageFile";
@@ -58,7 +61,8 @@ const MessageFileModal = () => {
 
       await axios.post(url, {
         ...data,
-        content:data.fileUrl
+        content:data.fileUrl,
+        fileName: fileName,
       });
       form.reset();
       router.refresh();
@@ -67,6 +71,10 @@ const MessageFileModal = () => {
       console.error(error);
     }
   };
+
+  const handleFileName = (name: string) => {
+    setFileName(name);
+  }
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
@@ -93,6 +101,7 @@ const MessageFileModal = () => {
                           endpoint="messageFile"
                           value={field.value}
                           onChange={field.onChange}
+                          handleFileName={handleFileName}
                         />
                       </FormControl>
                     </FormItem>

@@ -9,14 +9,22 @@ interface FileUploadProps {
   endpoint: "serverImage" | "messageFile";
   value: string;
   onChange: (url?: string) => void;
+  handleFileName?: (name: string) => void;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChange }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChange , handleFileName }) => {
 
   const [fileName, setFileName] = useState<string | null>(null);
   let fileType : string | undefined = value.split(".").pop();
   if(fileName){
     fileType = fileName?.split(".").pop()?.toLowerCase() || "";
+  }
+
+  const handleNameOfFile  = (name: string| null)=>{
+    setFileName(name)
+    if(handleFileName){
+      handleFileName(name || "");
+    }
   }
   
   if (value && fileType !== "pdf") {
@@ -67,7 +75,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChange }) =>
       <UploadDropzone
         endpoint={endpoint}
         onClientUploadComplete={(res) => {
-          setFileName(res?.[0].name);
+          handleNameOfFile(res?.[0].name);
           onChange(res?.[0].url);
         }}
         onUploadError={(err) => {
