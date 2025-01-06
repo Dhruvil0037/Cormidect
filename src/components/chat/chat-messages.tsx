@@ -7,6 +7,7 @@ import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
 import { ChatItem } from "./chat-item";
 import { format } from "date-fns";
+import { useChatSocket } from "@/hooks/useChatSocket";
 
 type MessageWithMemberWithUser = Message & {
   member: Member & {
@@ -40,6 +41,8 @@ const ChatMessages = ({
   type,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:update`;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     UseChatQuery({
@@ -48,6 +51,8 @@ const ChatMessages = ({
       paramKey,
       paramValue,
     });
+
+    useChatSocket({ queryKey, addKey, updateKey });
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
