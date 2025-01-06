@@ -68,7 +68,6 @@ const ChatMessages = ({
   
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   if (status === "pending") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">

@@ -5,57 +5,69 @@ import { redirect } from "next/navigation";
 import { ChatHeader } from "@/components/chat/chat-header";
 import ChatMessages from "@/components/chat/chat-messages";
 import { ChatInput } from "@/components/chat/chat-input";
+import { MediaRoom } from "@/components/media-room";
 
 interface MemberIdPageProps {
-  params:{
+  params: {
     serverId: string;
     memberId: string;
-  }
+  };
+  searchParams: {
+    video?: boolean;
+  };
 }
 
-const MemberIdPage = async({
-  params
-}: MemberIdPageProps) => {
+const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
   const user = await currentProfile();
-  if(!user){
+  if (!user) {
     return redirect("/");
   }
 
   const awaitedParams = await params;
 
   const currentMember = await db.member.findFirst({
-    where:{
+    where: {
       serverId: awaitedParams.serverId,
-      userDataId: user.id
+      userDataId: user.id,
     },
-    include:{
-      user:true
-    }
+    include: {
+      user: true,
+    },
   });
 
-  if(!currentMember){
+  if (!currentMember) {
     return redirect("/");
   }
 
-  const conversation = await getOrCreateConversation(currentMember.id , awaitedParams.memberId);
+  const conversation = await getOrCreateConversation(
+    currentMember.id,
+    awaitedParams.memberId
+  );
 
-  if(!conversation){
+  if (!conversation) {
     return redirect(`/servers/${awaitedParams.serverId}`);
   }
 
-  const { memberOne , memberTwo } = conversation;
+  const { memberOne, memberTwo } = conversation;
 
-  const otherMember = memberOne.userDataId === currentMember.id ? memberTwo : memberOne;
+  const otherMember =
+    memberOne.userDataId === currentMember.id ? memberTwo : memberOne;
 
   return (
     <div className="flex flex-col h-full">
-      <ChatHeader 
+      <ChatHeader
         imageUrl={otherMember.user.imageUrl}
         name={otherMember.user.name}
-        serverId={awaitedParams.serverId}
         type="conversation"
       />
-      <ChatMessages
+      {
+        searchParams.video && (
+          <MediaRoom chatId={conversation.id} video={true} audio={true} />
+        )
+      }
+      {!searchParams.video && (
+        <>
+          <ChatMessages
             member={currentMember}
             name={otherMember.user.name}
             chatId={conversation.id}
@@ -76,8 +88,10 @@ const MemberIdPage = async({
               conversationId: conversation.id,
             }}
           />
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default MemberIdPage
+export default MemberIdPage;
